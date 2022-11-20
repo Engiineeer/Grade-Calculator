@@ -19,10 +19,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final controler = TextEditingController();
+  String grading = "";
 
   @override
   Widget build(BuildContext context) {
@@ -42,28 +48,40 @@ class HomeScreen extends StatelessWidget {
                 child: ElevatedButton(
                   child: Text("Calculate"),
                   onPressed: () {
-                    int? grade = int.tryParse(controler.text);
+                    setState(() {
+                      int? grade = int.tryParse(controler.text);
 
-                    if (grade == null) {
-                      print("${controler.text} is not a number");
-                    }
+                      if (grade == null) {
+                        print("${controler.text} is not a number");
+                      }
 
-                    if (grade! >= 90) {
-                      print("A");
-                    } else if (grade >= 80) {
-                      print("B");
-                    } else if (grade >= 70) {
-                      print("C");
-                    } else if (grade >= 60) {
-                      print("D");
-                    } else {
-                      print("F");
-                    }
+                      if (grade! >= 90) {
+                        print("A");
+                        grading = "A";
+                      } else if (grade >= 80) {
+                        print("B");
+                        grading = "B";
+                      } else if (grade >= 70) {
+                        print("C");
+                        grading = "C";
+                      } else if (grade >= 60) {
+                        print("D");
+                        grading = "D";
+                      } else {
+                        grading = "F";
+                      }
+                    });
                   },
                 ),
               ),
             ),
-            Text("${controler.text}")
+            Padding(
+              padding: const EdgeInsets.only(top: 100.0),
+              child: Text(
+                grading,
+                style: TextStyle(fontSize: 150),
+              ),
+            ),
           ],
         ),
       ),
